@@ -23,6 +23,7 @@ source-repository head
 library
   exposed-modules:
       Day1
+      Day2
   other-modules:
       Paths_AdventOfCode2023
   autogen-modules:
@@ -32,6 +33,7 @@ library
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
       base >=4.7 && <5
+    , text
   default-language: Haskell2010
 
 executable AdventOfCode2023-exe
@@ -46,4 +48,5 @@ executable AdventOfCode2023-exe
   build-depends:
       AdventOfCode2023
     , base >=4.7 && <5
+    , text
   default-language: Haskell2010

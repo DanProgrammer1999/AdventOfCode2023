@@ -2,6 +2,7 @@ module Main (main) where
 
 import Data.Maybe (fromMaybe)
 import qualified Day1
+import qualified Day2
 
 type Algorithm = [String] -> Maybe String
 
@@ -12,7 +13,8 @@ main = do
 
 days :: [(Int, [Algorithm])]
 days =
-  [ (1, [Day1.part1, Day1.part2])
+  [ (1, [Day1.part1, Day1.part2]),
+    (2, [Day2.part1, Day2.part2])
   ]
 
 getFilePath :: Int -> FilePath
