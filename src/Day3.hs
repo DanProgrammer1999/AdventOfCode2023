@@ -2,7 +2,9 @@
 
 module Day3 where
 
+import Control.Applicative (liftA2)
 import Data.Char (isDigit)
+import Data.Maybe (fromMaybe)
 
 -- Data
 ----------
@@ -54,13 +56,10 @@ part1 input = fmap sum $ mapM (fmap read . matrixSubrow input) $ filter testNumb
     isValidSymbol = (&&) <$> not . isDigit <*> (/= '.')
 
 part2 :: [String] -> Maybe Int
-part2 input = Just $ sum $ map handleAsterisk allAsterisks
+part2 input = fmap sum . mapM (transformNumberPair . findAdjacentNumbers) $ filter ((== '*') . element) inlineMatrix
   where
     inlineMatrix = enumerateMatrix input
-    allAsterisks = filter ((== '*') . element) inlineMatrix
     findAdjacentNumbers (Idx i j _) = filter (elem (i, j) . numberNeighbours) (findNumberLocations inlineMatrix)
-    handleAsterisk x =
-      let adjacentNumbers = findAdjacentNumbers x
-       in if length adjacentNumbers == 2
-            then maybe 0 (product . map read) (mapM (matrixSubrow input) adjacentNumbers)
-            else 0
+
+    transformNumberPair [num1, num2] = liftA2 (*) (fmap read (matrixSubrow input num1)) (fmap read (matrixSubrow input num2))
+    transformNumberPair _ = Just 0
