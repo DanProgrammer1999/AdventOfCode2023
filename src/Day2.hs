@@ -27,8 +27,8 @@ parseLine :: Text -> Maybe Game
 parseLine line = fmap (`Game` games) gameId
   where
     (gameIdStr, gamesLine) = breakOn (pack ": ") line
-    gameId = read . unpack <$> stripPrefix (pack "Game ") gameIdStr
-    games = map parseCubes $ splitOn "; " (fromMaybe (pack "") (stripPrefix ": " gamesLine))
+    gameId = read . unpack <$> stripPrefix "Game " gameIdStr
+    games = map parseCubes $ splitOn "; " (fromMaybe "" (stripPrefix ": " gamesLine))
 
 parseCubes :: Text -> Cubes
 parseCubes cubes = Cubes {red = parseColour "red", green = parseColour "green", blue = parseColour "blue"}
