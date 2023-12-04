@@ -4,7 +4,6 @@ module Day3 where
 
 import Control.Applicative (liftA2)
 import Data.Char (isDigit)
-import Data.Maybe (fromMaybe)
 
 -- Data
 ----------
