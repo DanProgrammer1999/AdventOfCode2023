@@ -40,13 +40,13 @@ parseCubes cubes = Cubes {red = parseColour "red", green = parseColour "green", 
 runGames :: (Game -> a) -> ([a] -> b) -> [String] -> Maybe b
 runGames runGame combineResults input = combineResults <$> mapM (fmap runGame . parseLine . pack) input
 
-part1 :: [String] -> Maybe String
-part1 = runGames checkGame (show . sum)
+part1 :: [String] -> Maybe Int
+part1 = runGames checkGame sum
   where
     checkGame (Game gameId games) = if all checkCubes games then gameId else 0
     checkCubes cubes = red cubes <= red maxDraw && green cubes <= green maxDraw && blue cubes <= blue maxDraw
 
-part2 :: [String] -> Maybe String
-part2 = runGames calculateGamePower (show . sum)
+part2 :: [String] -> Maybe Int
+part2 = runGames calculateGamePower sum
   where
     calculateGamePower (Game _ games) = maximum (map red games) * maximum (map green games) * maximum (map blue games)

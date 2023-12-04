@@ -6,8 +6,8 @@ import Data.List (find, isPrefixOf)
 
 -- Part 1
 
-part1 :: [String] -> Maybe String
-part1 = fmap (show . sum) . mapM (fmap read . solveLine)
+part1 :: [String] -> Maybe Int
+part1 = fmap sum . mapM (fmap read . solveLine)
   where
     solveLine line = liftA2 (++) ((: []) <$> find isDigit line) ((: []) <$> find isDigit (reverse line))
 
@@ -35,5 +35,5 @@ findAndReplaceDigitWords (x : xs) =
   where
     nextDigit = find (\digitMapping -> fst digitMapping `isPrefixOf` (x : xs)) wordToDigit
 
-part2 :: [String] -> Maybe String
+part2 :: [String] -> Maybe Int
 part2 = part1 . map findAndReplaceDigitWords
