@@ -18,9 +18,9 @@ splitBy needle haystack =
    in (before, fromMaybe T.empty (T.stripPrefix needle rest))
 
 parseLine :: T.Text -> LotteryCard
-parseLine line = LotteryCard cardId (parseNumbers winningNumsLine) (parseNumbers ourNumsLine)
+parseLine line = LotteryCard currCardId (parseNumbers winningNumsLine) (parseNumbers ourNumsLine)
   where
-    cardId = read $ T.unpack $ T.filter isDigit label
+    currCardId = read $ T.unpack $ T.filter isDigit label
     parseNumbers = map read . filter (/= "") . map (T.unpack . T.strip) . T.split (== ' ') . T.strip
     (label, numbers) = splitBy ": " line
     (winningNumsLine, ourNumsLine) = splitBy " | " numbers

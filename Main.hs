@@ -35,8 +35,6 @@ runDay dayNumber parts = do
 runAlgorithm :: (Show a) => String -> FilePath -> Algorithm a -> IO ()
 runAlgorithm description filePath algorithm = do
   input <- readFile filePath
-  let result = algorithm (lines input)
-
   timeIt $ putStrLn $ "Running " ++ description ++ ". Result: " ++ show (algorithm (lines input))
 
 lineSeparator :: String
