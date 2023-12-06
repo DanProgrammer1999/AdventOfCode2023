@@ -1,41 +1,28 @@
 module Main (main) where
 
-import qualified Day1
-import qualified Day2
-import qualified Day3
-import qualified Day4
+import qualified Day5
 import System.TimeIt
 
 type Algorithm a = [String] -> a
 
 main :: IO ()
 main = do
-  putStrLn $ "🎄 Welcome to AoC 2023 🎄\n" ++ lineSeparator ++ "\n"
-  mapM_ (uncurry runDay) days
-
-days :: [(Int, [Algorithm (Maybe Int)])]
-days =
-  [ (1, [Day1.part1, Day1.part2]),
-    (2, [Day2.part1, Day2.part2]),
-    (3, [Day3.part1, Day3.part2]),
-    (4, [Day4.part1, Day4.part2])
-  ]
+  runAlgorithm 5 show Day5.part1
+  runAlgorithm 5 show Day5.part2 -- takes ~12 mins (752.81sec)
 
 getFilePath :: Int -> FilePath
 getFilePath day = "inputs/day" ++ show day ++ ".txt"
 
-runDay :: (Show a) => Int -> [Algorithm a] -> IO ()
-runDay dayNumber parts = do
-  putStrLn ("Day " ++ show dayNumber)
-  mconcat $ zipWith runPart [1 :: Int ..] parts
-  putStrLn $ lineSeparator ++ "\n"
-  where
-    runPart part = runAlgorithm ("Part " ++ show part) (getFilePath dayNumber)
+getSampleFilePath :: Int -> FilePath
+getSampleFilePath day = "inputs/day" ++ show day ++ "_sample.txt"
 
-runAlgorithm :: (Show a) => String -> FilePath -> Algorithm a -> IO ()
-runAlgorithm description filePath algorithm = do
+runSample :: Int -> (a -> String) -> Algorithm a -> IO ()
+runSample day renderOutput algorithm = putStrLn ("Day " ++ show day ++ " Sample. Result:\n") >> runWithFile (getSampleFilePath day) renderOutput algorithm
+
+runAlgorithm :: Int -> (a -> String) -> Algorithm a -> IO ()
+runAlgorithm day renderOutput algorithm = putStrLn ("Day " ++ show day ++ ". Result:\n") >> runWithFile (getFilePath day) renderOutput algorithm
+
+runWithFile :: FilePath -> (a -> String) -> Algorithm a -> IO ()
+runWithFile filePath renderOutput algorithm = do
   input <- readFile filePath
-  timeIt $ putStrLn $ "Running " ++ description ++ ". Result: " ++ show (algorithm (lines input))
-
-lineSeparator :: String
-lineSeparator = "--------------------"
+  timeIt $ putStrLn $ renderOutput $ algorithm $ lines input
