@@ -1,12 +1,14 @@
-{-# OPTIONS_GHC -Wno-unused-top-binds #-}
-
-module Day5 (part1, part2) where
+module Day5 where
 
 import Control.Applicative (liftA2)
+import Data.List (intercalate)
 import Data.Maybe (fromMaybe)
 import Utils
 
-data Range = Range {minRange :: Int, maxRange :: Int, delta :: Int} deriving (Show, Eq)
+data Range = Range {minRange :: Int, maxRange :: Int, delta :: Int} deriving (Eq)
+
+instance Show Range where
+  show range = "[" ++ show (minRange range) ++ "-" ++ show (maxRange range) ++ ": " ++ show (delta range) ++ "]"
 
 instance Ord Range where
   compare (Range r1 _ _) (Range r2 _ _) = compare r1 r2
@@ -37,6 +39,24 @@ parseInput input = case splitOn (== "") input of
   ([seedLine] : groups) -> liftA2 (,) (parseSeeds seedLine) (mapM parseGroup groups)
   _ -> Nothing
 
+-- parseInput' :: [String] -> String
+parseInput' input = intercalate "\n" $ map show $ buildRangeMap $ snd $ fromMaybe ([], []) (parseInput input)
+  where
+    transformRangeMap =
+      intercalate ",\t"
+        . map
+          ( \(Range minRange maxRange delta) ->
+              "("
+                ++ show minRange
+                ++ ", "
+                ++ show maxRange
+                ++ ") -> ("
+                ++ show (minRange + delta)
+                ++ ", "
+                ++ show (maxRange + delta)
+                ++ ")"
+          )
+
 mergeRanges :: RangeMap -> RangeMap -> RangeMap
 mergeRanges range1 [] = range1
 mergeRanges [] range2 = range2
@@ -52,6 +72,29 @@ mergeRanges (r1 : rs1) (r2 : rs2)
         ++ mergeRanges rs1 ([Range (c + 1) d d2 | c < d] ++ rs2)
 
     handleOverlappingRanges (Range a b d1) (Range c d d2) = Range a (c - 1) d1 : Range c d (d1 + d2) : mergeRanges (Range (d + 1) b d1 : rs1) rs2
+
+-- buildRangeMap :: [RangeMap] -> [((Int, Int), [(Int, Int)])]
+buildRangeMap rangeMaps = foldr mapRanges [lastRangeSources] others
+  where
+    lastRangeSources = map rangeToSourceRange lastRange
+    (lastRange : others) = reverse rangeMaps
+
+rangeToSourceRange :: Range -> (Int, Int)
+rangeToSourceRange (Range low high _) = (low, high)
+
+rangeToDestinationRange :: Range -> (Int, Int)
+rangeToDestinationRange (Range low high d) = (low + d, high + d)
+
+mapRanges :: RangeMap -> [[(Int, Int)]] -> [[(Int, Int)]]
+mapRanges a = map (concatMap findRanges)
+  where
+    findRanges (start, end) =
+      [ rangeToDestinationRange $ clipRange start end range
+        | range <- a,
+          minRange range + delta range >= start || maxRange range + delta range <= end
+      ]
+
+    clipRange start end range = range {minRange = max (minRange range) start, maxRange = min (maxRange range) end}
 
 applyRange :: Int -> RangeMap -> Int
 applyRange seed [] = seed

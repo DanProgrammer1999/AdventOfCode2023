@@ -8,7 +8,8 @@ type Algorithm a = [String] -> a
 main :: IO ()
 main = do
   runAlgorithm 5 show Day5.part1
-  runAlgorithm 5 show Day5.part2 -- takes ~12 mins (752.81sec)
+  -- runAlgorithm 5 show Day5.part2 -- takes ~12 mins (752.81sec)
+  runSample 5 id Day5.parseInput'
 
 getFilePath :: Int -> FilePath
 getFilePath day = "inputs/day" ++ show day ++ ".txt"
