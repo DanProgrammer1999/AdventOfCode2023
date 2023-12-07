@@ -1,15 +1,13 @@
 module Main (main) where
 
-import qualified Day5
+import qualified Day6
 import System.TimeIt
 
 type Algorithm a = [String] -> a
 
 main :: IO ()
 main = do
-  runAlgorithm 5 show Day5.part1
-  -- runAlgorithm 5 show Day5.part2 -- takes ~12 mins (752.81sec)
-  runSample 5 id Day5.parseInput'
+  runAlgorithm 6 show Day6.part1
 
 getFilePath :: Int -> FilePath
 getFilePath day = "inputs/day" ++ show day ++ ".txt"
