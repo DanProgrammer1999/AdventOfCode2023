@@ -1,13 +1,14 @@
 module Main (main) where
 
-import qualified Day6
+import qualified Day7
 import System.TimeIt
 
 type Algorithm a = [String] -> a
 
 main :: IO ()
 main = do
-  runAlgorithm 6 show Day6.part1
+  runAlgorithm 7 show Day7.part1
+  runAlgorithm 7 show Day7.part2
 
 getFilePath :: Int -> FilePath
 getFilePath day = "inputs/day" ++ show day ++ ".txt"
