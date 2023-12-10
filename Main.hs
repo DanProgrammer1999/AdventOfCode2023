@@ -1,14 +1,15 @@
 module Main (main) where
 
-import qualified Day7
+import qualified Day9
 import System.TimeIt
 
-type Algorithm a = [String] -> a
+type Algorithm a = String -> a
 
 main :: IO ()
 main = do
-  runAlgorithm 7 show Day7.part1
-  runAlgorithm 7 show Day7.part2
+  -- runAlgorithm 8 show Day8.part1
+
+  runAlgorithm 9 show Day9.part2
 
 getFilePath :: Int -> FilePath
 getFilePath day = "inputs/day" ++ show day ++ ".txt"
@@ -25,4 +26,4 @@ runAlgorithm day renderOutput algorithm = putStrLn ("Day " ++ show day ++ ". Res
 runWithFile :: FilePath -> (a -> String) -> Algorithm a -> IO ()
 runWithFile filePath renderOutput algorithm = do
   input <- readFile filePath
-  timeIt $ putStrLn $ renderOutput $ algorithm $ lines input
+  timeIt $ putStrLn $ renderOutput $ algorithm input
