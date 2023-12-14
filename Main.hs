@@ -1,14 +1,17 @@
 module Main (main) where
 
 import Data.List (intercalate)
-import qualified Day13
+import qualified Day11
 import System.TimeIt
 
 type Algorithm a = String -> a
 
 main :: IO ()
 main = do
-  runAlgorithm 13 show Day13.part2
+  runAlgorithm 11 show Day11.part1
+
+showList' :: (Show a) => [a] -> String
+showList' = intercalate "\n" . map show
 
 getFilePath :: Int -> FilePath
 getFilePath day = "inputs/day" ++ show day ++ ".txt"
