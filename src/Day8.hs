@@ -2,7 +2,6 @@
 
 module Day8 where
 
-import Control.Monad ((>=>))
 import Data.Char (isSpace, isUpper)
 import Data.List (find, isSuffixOf)
 import Data.Maybe (fromJust, listToMaybe)
