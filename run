@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+stack build && stack exec AdventOfCode2023-exe -- "$@"

@@ -1,5 +1,5 @@
 name: AdventOfCode2023
-version: 0.0.0.0.0.0.0.1
+version: 0.1
 github: "DanProgrammer1999/AdventOfCode2023"
 license: BSD-3-Clause
 author: "Danyil Dvorianov"
@@ -21,6 +21,7 @@ dependencies:
   - text
   - containers
   - timeit
+  - optparse-applicative
 
 ghc-options:
   - -Wall
@@ -34,12 +35,14 @@ ghc-options:
   - -Wredundant-constraints
 
 library:
-  source-dirs: src
+  source-dirs:
+    - src
+    - src/days
 
 executables:
   AdventOfCode2023-exe:
     main: Main.hs
-    source-dirs: .
+    source-dirs: app
     ghc-options:
       - -threaded
       - -rtsopts

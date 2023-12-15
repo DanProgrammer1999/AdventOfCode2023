@@ -1,17 +1,18 @@
 module Main (main) where
 
+import ArgParser
 import Data.List (intercalate)
 import qualified Day11
+import Options.Applicative
 import System.TimeIt
 
 type Algorithm a = String -> a
 
 main :: IO ()
-main = do
-  runAlgorithm 11 show Day11.part1
+main = execParser programParser >>= runWithOptions
 
-showList' :: (Show a) => [a] -> String
-showList' = intercalate "\n" . map show
+runWithOptions :: Options -> IO ()
+runWithOptions (Options day isSample parts) = putStrLn $ show day ++ " isSample: " ++ show isSample ++ " Parts: " ++ show parts
 
 getFilePath :: Int -> FilePath
 getFilePath day = "inputs/day" ++ show day ++ ".txt"
